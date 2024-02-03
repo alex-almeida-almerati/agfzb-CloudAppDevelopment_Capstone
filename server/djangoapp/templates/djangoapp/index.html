@@ -14,7 +14,7 @@
 
     </head>
 
-    <body>
+    <body style="height: 90vh; min-height: 90vh;">
         
         <nav class="navbar navbar-dark bg-dark justify-content-start">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
@@ -22,7 +22,7 @@
             <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
         </nav>
 
-        <div class="container-fluid justify-content-center">
+        <div class="row align-items-center justify-content-center" style="background-color: purple; height: 100%;">
             {% load static %}
             <img src="{% static 'bestcars_logo.png' %}" alt="Best Cars logo">
         </div>
