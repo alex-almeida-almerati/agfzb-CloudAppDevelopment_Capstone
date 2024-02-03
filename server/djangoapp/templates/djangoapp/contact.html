@@ -12,15 +12,20 @@
 
     <body>
 
-        <nav class="nav">
+        <nav class="navbar navbar-dark bg-dark justify-content-start">
+            <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
             <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
             <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
         </nav>
 
-        <ul>
-            <li>Address: Cdla. Kennedy Norte Mz 60 SI.2-10 Frente al Edificio de las Cámaras, Guayaquil 090506 </li>
-            <li>Telephone: +593-4123-4567</li>
-        </ul>
+        <div class="container p-3">
+
+            <ul>
+                <li>Address: Cdla. Kennedy Norte Mz 60 SI.2-10 Frente al Edificio de las Cámaras, Guayaquil 090506 </li>
+                <li>Telephone: +593-4123-4567</li>
+            </ul>
+
+        </div>
 
     </body>
 
