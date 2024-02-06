@@ -3,8 +3,9 @@
 
     <head>
 
-        <meta charset="UTF-8">
-        <title>About Us</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         
@@ -12,25 +13,31 @@
 
     <body>
 
-        <nav class="navbar navbar-dark bg-dark justify-content-start">
+        <!-- <nav class="navbar navbar-dark bg-dark justify-content-start">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars</a>
             <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
             <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
-        </nav>
+        </nav> -->
 
         <form action="{% url 'djangoapp:login' %}" method="post">
+
             {% csrf_token %}
             <div class="container">
-              <h1>Login</h1>
-              <label for="username"><b>User Name</b></label>
-              <input type="text" placeholder="Enter User Name: " name="username" required>
-              <label for="psw"><b>Password</b></label>
-              <input type="password" placeholder="Enter Password: " name="psw" required>
-              <div>
-                <button class="button" type="submit">Login</button>
-              </div>
+
+                <h1>Login</h1>
+                <label for="username"><b>User Name</b></label><br>
+                <input type="text" placeholder="Enter User Name: " name="username" required><br>
+                <label for="psw"><b>Password</b></label><br>
+                <input type="password" placeholder="Enter Password: " name="psw" required><br><br>
+
+                <div>
+                    <button class="button btn-primary" type="submit">Login</button>
+                </div>
+
             </div>
-          </form>
+
+        </form>
+
     </body>
 
 </html>
