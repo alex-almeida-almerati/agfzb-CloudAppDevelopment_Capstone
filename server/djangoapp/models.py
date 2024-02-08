@@ -38,8 +38,8 @@ class CarModel(models.Model):
         (WAGON, "Wagon"),
         (COUPE, "Coupe")
     ]
-
-    carMake = models.ForeignKey(CarMake, null=False, on_delete=models.CASCADE)
+    
+    carMake = models.ForeignKey(CarMake, null=True, on_delete=models.CASCADE)
     name = models.CharField(null=False, max_length=100)
     dealer_id = models.IntegerField()
     type = models.CharField(null=False, max_length=5, choices=TYPE_CHOICES, default=SEDAN)
@@ -47,9 +47,9 @@ class CarModel(models.Model):
 
     def __str__(self):
         message = ("Name: " + self.name + "\n"
-                    + "Dealer Id: " + self.dealer_id + "\n"
+                    + "Dealer Id: " + str(self.dealer_id) + "\n"
                     + "Type: " + self.type + "\n"
-                    + "Year: " + self.year)
+                    + "Year: " + str(self.year))
         return message
 
 
