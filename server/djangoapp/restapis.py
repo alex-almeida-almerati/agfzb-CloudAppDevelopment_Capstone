@@ -1,7 +1,7 @@
 import requests
 import json
 # import related models here
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
 
@@ -84,21 +84,23 @@ def get_dealers_by_id(url, **kwargs):
 def get_dealer_reviews_from_cf(url, dealerId):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url, dealerId=dealerId)
+    json_result = get_request(url, id=dealerId)
     if json_result:
-        # Get the row list in JSON as dealers
+        # Get the row list in JSON as dealer_reviews
         dealer_reviews = json_result
         
         # For each dealer_review object
-        for dealer in dealer_reviews:
+        for review in dealer_reviews:
             # Get its content in `doc` object
             review_doc = review
             print("Review",review_doc)
             # Create a CarDealer object with values in `doc` object
-            review_obj = Review(id=review_doc["id"], name=review_doc["name"], dealership=review_doc["dealership"],
-                                   review=review_doc["review"], purchase=review_doc["purchase"],
-                                   purchase_date=review_doc["purchase_date"], car_make=review_doc["car_make"],
-                                   car_model=review_doc["car_model"], car_year=review_doc["car_year"])
+            review_obj = DealerReview(id=review_doc["id"], name=review_doc["name"],
+                            dealership=review_doc["dealership"],
+                            review=review_doc["review"], purchase=review_doc["purchase"],
+                            purchase_date=review_doc["purchase_date"], car_make=review_doc["car_make"],
+                            car_model=review_doc["car_model"], car_year=review_doc["car_year"],
+                            sentiment="neutral")
             results.append(review_obj)
 
     return results

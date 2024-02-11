@@ -90,11 +90,11 @@ class DealerReview:
         self.dealership = dealership
         # DealerReview name
         self.name = name
-        # DealerReview review
-        self.purchase = purchase
-        # DealerReview purchase_date
-        self.review = review
         # DealerReview purchase
+        self.purchase = purchase
+        # DealerReview review
+        self.review = review
+        # DealerReview purchase_date
         self.purchase_date = purchase_date
         # Location car_make
         self.car_make = car_make
@@ -108,5 +108,5 @@ class DealerReview:
         self.id = id
 
     def __str__(self):
-        return "DealerReview name: " + self.full_name
+        return "DealerReview review: " + self.review
 
