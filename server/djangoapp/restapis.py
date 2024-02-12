@@ -6,8 +6,6 @@ from requests.auth import HTTPBasicAuth
 
 
 # Create a `get_request` to make HTTP GET requests
-# e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-#                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
@@ -39,14 +37,8 @@ def get_request(url, **kwargs):
     json_data = json.loads(response.text)
     return json_data
 
-# Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
-
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
-# def get_dealers_from_cf(url, **kwargs):
-# - Call get_request() with specified arguments
-# - Parse JSON results into a CarDealer object list
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
@@ -94,9 +86,6 @@ def get_dealers_by_id(url, **kwargs):
 
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-# - Call get_request() with specified arguments
-# - Parse JSON results into a DealerView object list
 def get_dealer_reviews_from_cf(url, dealerId):
     results = []
     # Call get_request with a URL parameter
@@ -118,7 +107,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
                             car_model=review_doc["car_model"], car_year=review_doc["car_year"],
                             sentiment="")
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)
-            print("review:" + review_obj.review + "- sentiment: " + review_obj.sentiment)
+            # print("review: \"" + review_obj.review + "\" - sentiment: " + review_obj.sentiment)
             results.append(review_obj)
 
     return results
@@ -136,6 +125,14 @@ def analyze_review_sentiments(dealerreview):
     # print(json_result)
     sentiment = json_result["sentiment"]["document"]["label"]
     return sentiment
+
+
+# Create a `post_request` to make HTTP POST requests
+def post_request(url, json_payload, **kwargs):
+    print(kwargs)
+    print("POST from {} ".format(url))
+    response = requests.post(url, params=kwargs, json=json_payload)
+    return response
 
 
 

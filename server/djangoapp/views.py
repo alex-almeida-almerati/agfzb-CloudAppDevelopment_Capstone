@@ -113,12 +113,25 @@ def get_dealer_details(request, dealer_id):
         # Get reviews from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
         # Concat all reviews's reviews
-        reviews_reviews = '; '.join([review.review + ": " + review.sentiment for review in reviews])
+        reviews_reviews = '; '.join(["\"" + review.review + "\" : " + review.sentiment for review in reviews])
         # Return a list of reviews reviews
         return HttpResponse(reviews_reviews)
 
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+def add_review(request, dealer_id):
+    if request.method == "POST":
+        url = "https://aladalmeida-3001.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/reviews/post"
+        review = dict()
+        review["time"] = datetime.utcnow().isoformat()
+        review["name"] = request.GET["name"]
+        review["dealership"] = dealer_id
+        review["review"] = request.GET["review"]
+        review["purchase"] = request.GET["purchase"]
+
+        json_payload = dict()
+        json_payload["review"] = review
+        response = post_request(url, json_payload, dealerId=dealer_id)
+        return HttpResponse(response)
+
 
