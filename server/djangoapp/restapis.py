@@ -18,8 +18,14 @@ def get_request(url, **kwargs):
         if api_key:
             # Basic authentication GET
             # Call get method of requests library with URL, parameters and apikey
-            response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                        params=kwargs, auth=HTTPBasicAuth('apikey', api_key))
+            params = dict()
+            params["text"] = kwargs["text"]
+            params["version"] = kwargs["version"]
+            params["features"] = kwargs["features"]
+            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            params["language"] = "en"
+            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'}, 
+                                        auth=HTTPBasicAuth('apikey', api_key))
         else:
             # no authentication Get
             # Call get method of requests library with URL and parameters
@@ -121,19 +127,14 @@ def get_dealer_reviews_from_cf(url, dealerId):
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(dealerreview):
     api_key = "xp3Ed1i0p0KNhQDm3GV28nm8Wgr9BkVTQiFG0hIgkk1F"
-    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/cc779099-cc54-4a67-89c3-70f932c9737a"
-    params = dict()
-    # params["text"] = kwargs["text"]
-    # params["version"] = kwargs["version"]
-    # params["features"] = kwargs["features"]
-    # params["return_analyzed_text"] = kwargs["return_analyzed_text"]
-    params["text"] = dealerreview
-    params["version"] = "2022-04-07"
-    params["features"] = "sentiment"
-    params["return_analyzed_text"] = "false"
-    response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-                                auth=HTTPBasicAuth('apikey', api_key))
-    sentiment = "supercalifragilisticoexpialidoso"
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/cc779099-cc54-4a67-89c3-70f932c9737a/v1/analyze"
+    text = dealerreview
+    version = "2022-04-07"
+    features = "sentiment"
+    return_analyzed_text = "false"
+    json_result = get_request(url, api_key=api_key, text=text, version=version, features=features, return_analyzed_text=return_analyzed_text)
+    # print(json_result)
+    sentiment = json_result["sentiment"]["document"]["label"]
     return sentiment
 
 
