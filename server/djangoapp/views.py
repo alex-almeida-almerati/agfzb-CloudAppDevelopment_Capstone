@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
 from .restapis import (get_dealers_from_cf, get_dealer_reviews_from_cf, 
-                         post_request)
+                         get_dealer_by_id, get_dealers_by_state, post_request)
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -100,7 +100,12 @@ def get_dealerships(request):
     if request.method == "GET":
         url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
+        if "dealerId" in request.GET:
+            dealerships = get_dealer_by_id(url, dealerId=request.GET["dealerId"])
+        elif "state" in request.GET:
+            dealerships = get_dealers_by_state(url, state=request.GET["state"])
+        else:
+            dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
         dealer_names = '; '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
@@ -133,7 +138,7 @@ def add_review(request, dealer_id):
         review["car_make"] = request.GET["car_make"]
         review["car_model"] = request.GET["car_model"]
         review["car_year"] = request.GET["car_year"]
-        # review["time"] = datetime.utcnow().isoformat()
+        review["time"] = datetime.utcnow().isoformat()
 
         json_payload = dict()
         json_payload["review"] = review
