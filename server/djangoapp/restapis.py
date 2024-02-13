@@ -108,8 +108,8 @@ def analyze_review_sentiments(dealerreview):
 def post_request(url, json_payload, **kwargs):
     print(kwargs)
     print("POST from {} ".format(url))
-    response = requests.post(url, params=kwargs, json=json_payload)
-    return response
+    result = requests.post(url, params=kwargs, json=json_payload)
+    return result
 
 
 

@@ -124,11 +124,16 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
         review = dict()
-        review["time"] = datetime.utcnow().isoformat()
+        review["id"] = request.GET["id"]
         review["name"] = request.GET["name"]
         review["dealership"] = dealer_id
         review["review"] = request.GET["review"]
         review["purchase"] = request.GET["purchase"]
+        review["purchase_date"] = request.GET["purchase_date"]
+        review["car_make"] = request.GET["car_make"]
+        review["car_model"] = request.GET["car_model"]
+        review["car_year"] = request.GET["car_year"]
+        # review["time"] = datetime.utcnow().isoformat()
 
         json_payload = dict()
         json_payload["review"] = review
