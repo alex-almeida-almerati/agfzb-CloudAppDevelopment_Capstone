@@ -52,6 +52,7 @@ def login_request(request):
     else:
         return render(request, 'djangoapp/user_login.html', context)
 
+
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
     # Get the user object based on session id in request
@@ -116,38 +117,42 @@ def get_dealerships(request):
         return render(request, 'djangoapp/index.html', context)
 
 
-
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
+        context = {}
         url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
         # Get reviews from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
         # Concat all reviews's reviews
-        reviews_reviews = '; '.join(["\"" + review.review + "\" : " + review.sentiment for review in reviews])
-        # Return a list of reviews reviews
-        return HttpResponse(reviews_reviews)
+        # reviews_list = '; '.join(["\"" + review.review + "\" : " + review.sentiment for review in reviews])
+        context["reviews"] = reviews
+        context["dealer_id"] =  dealer_id
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
+    if request.method == "GET":
+        context = {}
+        
     if request.method == "POST":
-        url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
-        review = dict()
-        review["id"] = request.GET["id"]
-        review["name"] = request.GET["name"]
-        review["dealership"] = dealer_id
-        review["review"] = request.GET["review"]
-        review["purchase"] = request.GET["purchase"]
-        review["purchase_date"] = request.GET["purchase_date"]
-        review["car_make"] = request.GET["car_make"]
-        review["car_model"] = request.GET["car_model"]
-        review["car_year"] = request.GET["car_year"]
-        review["time"] = datetime.utcnow().isoformat()
+        # if user.is_authenticated:
+            url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+            review = dict()
+            review["id"] = request.GET["id"]
+            review["name"] = request.GET["name"]
+            review["dealership"] = dealer_id
+            review["review"] = request.GET["review"]
+            review["purchase"] = request.GET["purchase"]
+            review["purchase_date"] = request.GET["purchase_date"]
+            review["car_make"] = request.GET["car_make"]
+            review["car_model"] = request.GET["car_model"]
+            review["car_year"] = request.GET["car_year"]
+            review["time"] = datetime.utcnow().isoformat()
 
-        json_payload = dict()
-        json_payload["review"] = review
-        response = post_request(url, json_payload, dealerId=dealer_id)
-        return HttpResponse(response)
-
+            json_payload = dict()
+            json_payload["review"] = review
+            response = post_request(url, json_payload, dealerId=dealer_id)
+            return HttpResponse(response)
 
