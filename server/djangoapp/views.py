@@ -122,11 +122,16 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
+
+        # Get dealer details
+        url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        dealers = get_dealer_by_id(url, dealerId=dealer_id)
+        dealer = dealers[0]
+        context["dealer"] = dealer
+
+        # Get dealer's reviews
         url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
-        # Get reviews from the URL
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
-        # Concat all reviews's reviews
-        # reviews_list = '; '.join(["\"" + review.review + "\" : " + review.sentiment for review in reviews])
         context["reviews"] = reviews
         context["dealer_id"] =  dealer_id
         return render(request, 'djangoapp/dealer_details.html', context)
@@ -150,15 +155,15 @@ def add_review(request, dealer_id):
         elif request.method == "POST":
             url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
-            # review["id"] = request.POST["id"]
-            review["id"] = 50
+            time_id = (datetime.utcnow()).timestamp()
+            review["id"] = int(round(time_id))
             name = request.user.username
             if request.user.first_name and request.user.last_name:
                 name = request.user.first_name + " " + request.user.last_name
             review["name"] = name
             review["dealership"] = dealer_id
             review["review"] = request.POST["content"]
-            review["purchase"] = True if request.POST["purchasecheck"] == "on" else False
+            review["purchase"] = True if "purchasecheck" in request.POST else False
             review["purchase_date"] = request.POST["purchasedate"]
             car = CarModel.objects.get(pk=request.POST["car"])
             review["car_make"] = car.carMake.name
