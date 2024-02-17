@@ -135,8 +135,12 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     if request.method == "GET":
         context = {}
-        
-    if request.method == "POST":
+        url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        dealer = get_dealer_by_id(url, dealerId=dealer_id)
+        context["dealer"] = dealer
+        context["dealer_id"] = dealer_id
+        return render(request, 'djangoapp/add_review.html', context)
+    elif request.method == "POST":
         # if user.is_authenticated:
             url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
