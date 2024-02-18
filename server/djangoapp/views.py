@@ -102,7 +102,7 @@ def get_dealerships(request):
     if request.method == "GET":
         context = {}
         dealerships = None
-        url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        url = "https://aladalmeida-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         # Get dealers from the URL
         if "dealerId" in request.GET:
             dealerships = get_dealer_by_id(url, dealerId=request.GET["dealerId"])
@@ -124,13 +124,13 @@ def get_dealer_details(request, dealer_id):
         context = {}
 
         # Get dealer details
-        url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        url = "https://aladalmeida-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         dealers = get_dealer_by_id(url, dealerId=dealer_id)
         dealer = dealers[0]
         context["dealer"] = dealer
 
         # Get dealer's reviews
-        url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
+        url = "https://aladalmeida-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/get_reviews"
         reviews = get_dealer_reviews_from_cf(url, dealer_id)
         context["reviews"] = reviews
         context["dealer_id"] =  dealer_id
@@ -144,7 +144,7 @@ def add_review(request, dealer_id):
 
         if request.method == "GET":
             context = {}
-            url = "https://aladalmeida-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+            url = "https://aladalmeida-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
             dealers = get_dealer_by_id(url, dealerId=dealer_id)
             dealer = dealers[0]
             context["dealer"] = dealer
@@ -153,7 +153,7 @@ def add_review(request, dealer_id):
             return render(request, 'djangoapp/add_review.html', context)
 
         elif request.method == "POST":
-            url = "https://aladalmeida-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+            url = "https://aladalmeida-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
             time_id = (datetime.utcnow()).timestamp()
             review["id"] = int(round(time_id))
